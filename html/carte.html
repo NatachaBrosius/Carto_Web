@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Ecoles primaire CSS de la Capitale</title>
+  <!-- Ajout de la police d'écriture -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap" rel="stylesheet"> -->
+  <!-- Appel du css personnel pour la mise en forme -->
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Appel des attributs leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+    </script>
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+
+  <!-- Load Esri Leaflet Vector from CDN -->
+  <script src="https://unpkg.com/esri-leaflet-vector@4.2.3/dist/esri-leaflet-vector.js" crossorigin=""></script>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.23/"></script>
+
+</head>
+
+<body>
+  <!-- barre de menu latérale -->
+  <div id="mySidenav" class="texte">
+    <a href="https://www.cegeplimoilou.ca/"><img src="../Image/logo_cegep.png" alt="logo"></a>
+    <p>Les 5 meilleures</p> <br>
+    <p class="rouge">en construction</p><br>
+    <p>Ici s'affichera la liste des 5 meilleures écoles selon des filtres. <br> En attendant si vous cliqué sur une
+      école vous obtenez son nom et son adresse.</p>
+  </div>
+  <!-- barre de menu du haut -->
+  <header>
+    <div class="container">
+      <div class="item carte"> <a href="carte.html">Carte</a> </div>
+      <div class="item apropos"><a href="Apropos.html">A propos</a></div>
+      <div class="item contact"><a href="formulaire.html">Contact</a></div>
+    </div>
+    <img src="../Image/Ecole.jpg" alt="ecole" style="width:60%;height: 60%;">
+  </header>
+  <!-- centrer sur la carte -->
+  <div><a href="#map" style="padding-left: 80px;">Centrer sur la carte </a></div>
+  <div id="map">
+    <!-- Titre -->
+    <div class="Titre_carte">
+      <h1>Ecoles primaires de la commission scolaire de la Capitale</h1>
+    </div>
+    <!-- légende -->
+    <div class="legend">
+      <p> <img src="https://img.icons8.com/?size=24&id=EOn31zjdfgcn&format=png" alt="icone"></a>Ecole primaire</p>
+    </div>
+  </div>
+  <footer>
+    <br>Projet réalisé par Natacha Brosius Guilon au cours de l'hiver 2024 à Québec.
+  </footer>
+  <!-- Appel du script pour l'affichage de la carte -->
+  <script src="../java/script.js"></script>
+</body>
+
+</html>
