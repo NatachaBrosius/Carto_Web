@@ -198,7 +198,7 @@
     L.Control.Legend = L.Control.extend({
         options: {
             position: "topleft",
-            title: "Magnitude sur l'échelle de Reishter",
+            title: "",
             legends: [],
             symbolWidth: 24,
             symbolHeight: 24,

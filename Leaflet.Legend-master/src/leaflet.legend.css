@@ -5,7 +5,6 @@
 .leaflet-legend-title {
   margin: 3px;
   padding-bottom: 5px;
-  font-size: 12px;
 }
 
 .leaflet-legend-column {
@@ -26,7 +25,6 @@
   white-space: nowrap;
   background-color: transparent;
   text-align: left;
-  font-size: 10px;
 }
 
 .leaflet-legend-item-clickable {
