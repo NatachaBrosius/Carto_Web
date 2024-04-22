@@ -1,215 +1,154 @@
-// Créer la carte avec vue initiale
-var map = L.map('map').setView([0, 0], 3);
+var myMap = L.map('map').setView([46.866999, -71.417999], 12);
 
-// Ajout de la couche OpenStreetMap à la carte
 var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+}).addTo(myMap);
 
-var topo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-});
+var topo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {});
 
-// Control d'échelle
-L.control.scale().addTo(map);
+var ecoleLayer, bassinLayer; // Déclarer les variables de couche à l'extérieur
 
-// Créer une légende personnalisée pour les lignes
-var customLegend = L.control({ position: 'bottomleft' });
+const ecole = '..//Donnee/data.geojson';
+const bassin ='..//Donnee/Bassin.geojson';
 
-customLegend.onAdd = function(map) {
-    var div = L.DomUtil.create('div', 'Type_de_faille'); // Créer un élément div pour la légende
-    div.innerHTML += '<strong>Magnitude</strong><br>';
-    div.innerHTML += '<img src="eclair_blanc.png" alt="Magnitude faible" width="10"> <   3<br>';
-    div.innerHTML += '<img src="eclair_jaune.png" alt="Magnitude moyenne" width="10">   >= 3<br>';
-    div.innerHTML += '<img src="eclair_rouge.png" alt="Magnitude forte" width="10">   >= 6<br><br>';
-    div.innerHTML += '<strong>Type de faille</strong><br>';
-    div.innerHTML += '<svg height="20" width="20"><line x1="0" y1="15" x2="30" y2="15" style="stroke:#3366ff;stroke-width:2" /></svg> Faille<br>';
-    div.innerHTML += '<svg height="20" width="20"><line x1="0" y1="15" x2="30" y2="15" style="stroke:#E7DDFF;stroke-width:2" /></svg> Tranchée<br>';
-    div.innerHTML += '<svg height="20" width="20"><line x1="0" y1="15" x2="30" y2="15" style="stroke:#999999;stroke-width:2" /></svg> Autre<br>';
-    return div;
-};
-
-customLegend.addTo(map); // Ajouter la légende à la carte
-// Créer une couche pour les lignes de tranchée
-var linesLayer;
-
-// Charger le fichier GeoJSON contenant la couche de lignes
-fetch('Trench.json')
+fetch(ecole)
     .then(response => response.json())
     .then(data => {
-        // Créer une couche GeoJSON à partir des données chargées
-        linesLayer = L.geoJSON(data, {
-            style: function(feature) {
-                // Déterminer le style en fonction de la propriété "datatype"
-                var color, weight;
+        ecoleLayer = L.geoJSON(data, {
+            pointToLayer: function (feature, latlng) {
+                var marker = L.marker(latlng, {
+                    icon: L.icon({
+                        iconUrl: 'https://img.icons8.com/?size=24&id=EOn31zjdfgcn&format=png',
+                        iconSize: [20, 20],
+                        iconAnchor: [15, 30],
+                    })
+                });
+                marker.bindPopup(`<b>${feature.properties.nom_ecole}</br>${feature.properties.adr_ecole}</br>${feature.properties.code_post_ecole},${feature.properties.ville_ecole}</br>Moyenne globale:${feature.properties.Moyenne_globale}/5</b>`).openPopup();
+                return marker;
+            }
+        });
+        ecoleLayer.addTo(myMap);
+    });
 
-                if (feature.properties.datatype === 'RI') { // Tranchée de type RI
-                    color = '#3366ff'; // Couleur pour la tranchée de type RI
-                    weight = 2; // Épaisseur de la ligne pour la tranchée de type RI
-                } else if (feature.properties.datatype === 'TR') { // Tranchée de type TR
-                    color = '#E7DDFF'; // Couleur pour la tranchée de type TR
-                    weight = 2; // Épaisseur de la ligne pour la tranchée de type TR
-                } else {
-                    color = '#999999'; // Couleur par défaut pour les autres types de tranchées
-                    weight = 2; // Épaisseur de ligne par défaut
+fetch(bassin)
+    .then(response => response.json())
+    .then(data => {
+        bassinLayer = L.geoJSON(data, {
+            style: function (feature) {
+                var couleur = feature.properties.Couleur;
+                var fillColor;
+                switch (couleur) {
+                    case '1':
+                        fillColor = '#FBB4AE';
+                        break;
+                    case '2':
+                        fillColor = '#B3CDE3';
+                        break;
+                    case '3':
+                        fillColor = '#CCEBC5';
+                        break;
+                    case '4':
+                        fillColor = '#DECBE4';
+                        break;
+                    case '5':
+                        fillColor = '#FED9A6';
+                        break;
+                    default:
+                        fillColor = '#cccccc';
                 }
 
                 return {
-                    color: color,
-                    weight: weight,
-                    opacity: 1 // Opacité de la ligne
+                    color: '#6E6E6E',
+                    weight: 1,
+                    fillOpacity: 0.5,
+                    fillColor: fillColor
                 };
             }
         });
 
-        // Ajouter la couche de lignes à la carte
-        linesLayer.addTo(map);
+        bassinLayer.addTo(myMap);
 
-        // Créer un objet de couches pour le contrôle de couches
         var baseLayers = {
             "OpenStreetMap": osm,
             "Topo selon ESRI": topo
         };
 
         var overlays = {
-            "Failles": linesLayer,
-            "Activités sismiques": markers
+            "École": ecoleLayer,
+            "Bassin de desserte": bassinLayer
         };
 
-        // Ajouter le contrôle de couches à la carte
-        L.control.layers(baseLayers, overlays).addTo(map);
-    });
-// Charger le fichier GeoJSON contenant la couche de polygone
-fetch('PB2002_plates.json')
-    .then(response => response.json())
-    .then(data => {
-        // Créer une couche GeoJSON à partir des données chargées
-        var PolyLayer = L.geoJSON(data, {
-            style: function(feature) {
-                return {
-                    fillColor: 'rgba(0, 0, 0, 0)', // Fond transparent (noir avec une transparence de 0)
-                    color: 'rgba(0, 0, 0, 0)', // Contour transparent (noir avec une transparence de 0)
-                    weight: 1, // Épaisseur du contour
-                    opacity: 1 // Opacité du contour
-                };
-            },
-            onEachFeature: function(feature, layer) {
-                // Extraire les données du fichier GeoJSON pour l'étiquette
-                var name = feature.properties.PlateName;
-
-                // Ajouter l'étiquette à chaque polygone
-                layer.bindTooltip(name, { direction: 'center', permanent: true, className: 'label-div-icon' });
-            }
-        });
-
-        PolyLayer.addTo(map);
-
-        // Gérer l'affichage des étiquettes en fonction du niveau de zoom
-        map.on('zoomend', function() {
-            var currentZoom = map.getZoom();
-            if (currentZoom >= 4 && currentZoom < 12) {
-                PolyLayer.eachLayer(function(layer) {
-                    layer.openTooltip();
-                });
-            } else {
-                PolyLayer.eachLayer(function(layer) {
-                    layer.closeTooltip();
-                });
-            }
-        });
+        L.control.layers(baseLayers, overlays).addTo(myMap);
     });
 
-// Ajouter un Service fetch et donner les symboles personnalisés
-var smn = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-01&endtime=2024-04-01';
-var baseEpi;
-var endroit;
-var markers = L.markerClusterGroup(); // Création d'un groupe de marqueurs cluster
-// Icons
-var faible = L.icon({
-    iconUrl: 'eclair_blanc.png',
-    iconSize: [10, 20],
-    iconAnchor: [10, 10]
+L.control.scale({
+    position: 'topleft',
+    maxWidth: 100,
+    imperial: false
+}).addTo(myMap);
+
+L.control.legend({
+    position: "bottomleft",
+    legends: [{
+        label: "Ecole",
+        type: "image",
+        url: "https://img.icons8.com/?size=24&id=EOn31zjdfgcn&format=png",
+    },
+    {
+        label: "Bassin",
+        type: "image",
+        url: '', 
+    },
+    {
+        label: "",
+        type: "image",
+        url: '../Image/Bassin1.png',
+    },{
+        label: "",
+        type: "image",
+        url: '../Image/Bassin2.png',
+    },{
+        label: "",
+        type: "image",
+        url: '../Image/Bassin3.png',
+    },{
+        label: "",
+        type: "image",
+        url: '../Image/Bassin4.png',
+    },{
+        label: "",
+        type: "image",
+        url: '../Image/Bassin5.png',
+    }]
+}).addTo(myMap);
+
+var EvaluateSchoolControl = L.Control.extend({
+    onAdd: function(map) {
+        var button = L.DomUtil.create('button');
+        button.innerHTML = 'Évaluer mon école';
+        button.className = 'evaluate-button';
+        button.onclick = function() {
+            window.location.href = 'https://survey123.arcgis.com/share/2a29a8334131406ea2bb8d68eae3215b';
+        };
+        return button;
+    }
 });
 
-var moyen = L.icon({
-    iconUrl: 'eclair_jaune.png',
-    iconSize: [10, 20],
-    iconAnchor: [10, 10]
+(new EvaluateSchoolControl()).addTo(myMap);
+
+
+// Créez une instance du contrôle de recherche
+var searchControl = new L.Control.Search({
+    position: 'topright', // Position du contrôle de recherche
+    layer: ecoleLayer, // Utilisez la couche ecoleLayer pour la recherche
+    propertyName: 'nom_ecole', // Propriété à rechercher dans les données
+    marker: false, // Indique si les marqueurs doivent être affichés pour les résultats de recherche
+    moveToLocation: function(latlng, title, myMap) {
+        // Définir ce que vous souhaitez faire lorsque l'utilisateur sélectionne un résultat de recherche
+        myMap.setView(latlng, 15); // Centrer la carte sur le résultat avec un zoom de 18
+    }
 });
-var fort = L.icon({
-    iconUrl: 'eclair_rouge.png',
-    iconSize: [10, 20],
-    iconAnchor: [10, 10]
-});
 
-fetch(smn)
-    .then(response => response.json())
-    .then(data => {
-        baseEpi = data.features;
-
-        baseEpi.forEach(feature => {
-            var magnitude = feature.properties.mag;
-            var endroit = feature.properties.place;
-
-            var icon;
-            if (magnitude >= 6) {
-                icon = fort;
-            } else if (magnitude >= 3) {
-                icon = moyen;
-            } else {
-                icon = faible;
-            }
-
-            var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: icon });
-            // Création du contenu de la fenêtre contextuelle
-            var popupContent = "<br><b>Lieu:</b> " + endroit + "<b> Magnitude:</b> " + magnitude;
-
-            // Liaison de la fenêtre contextuelle au marqueur
-            marker.bindPopup(popupContent);
-
-            markers.addLayer(marker); // Ajout du marqueur au groupe de marqueurs cluster 
-        });
-
-        map.addLayer(markers); // Ajout du groupe de marqueurs cluster à la carte
-    });
-
-// Fonction de filtrage en fonction de la magnitude
-function filterByMagnitude(minMagnitude, maxMagnitude) {
-    // Effacer les anciens marqueurs de la carte
-    markers.clearLayers();
-
-    // Filtrer les données en fonction de la magnitude
-    baseEpi.forEach(function(feature) {
-        var magnitude = feature.properties.mag;
-
-        if (magnitude >= minMagnitude && magnitude <= maxMagnitude) {
-            var icon;
-            if (magnitude >= 6) {
-                icon = fort;
-            } else if (magnitude >= 3) {
-                icon = moyen;
-            } else {
-                icon = faible;
-            }
-
-            var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], { icon: icon });
-
-            var popupContent = "<br><b>Lieu:</b> " + endroit + "<b> Magnitude:</b> " + magnitude;
-
-            marker.bindPopup(popupContent);
-
-            markers.addLayer(marker);
-        }
-    });
-
-    map.addLayer(markers); // Ajout des nouveaux marqueurs filtrés à la carte
-}
-
-// Gestionnaire d'événement pour le bouton de filtre
-document.getElementById('filter-button').addEventListener('click', function() {
-    var minMagnitude = parseFloat(document.getElementById('min-magnitude').value);
-    var maxMagnitude = parseFloat(document.getElementById('max-magnitude').value);
-
-    // Filtrer en fonction de la magnitude spécifiée
-    filterByMagnitude(minMagnitude, maxMagnitude);
-});
+// Ajoutez le contrôle de recherche à votre carte
+searchControl.addTo(myMap);

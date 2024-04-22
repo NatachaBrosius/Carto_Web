@@ -1,13 +1,3 @@
-/* div{
-    background-color: blueviolet;
-    color:bisque;
-    font-size: 50px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: red;
-    
-    }  */
-
 .col,.col-1,.col-7, .col-8, .col-2, .col-5{
     border: 1px solid black;
     background-color: black;
@@ -27,18 +17,15 @@
   position: fixed;
   z-index: 99;
 }
-.header ,.nav{
-  background-color: aqua;
-  height: 200px;
-  margin: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color:azure;
+.tete{
+  padding-top: 60px;
 }
-
 .menu {
   text-align:center;
+  z-index: 100;
+}
+.bloc {
+  z-index: 99;
 }
 .section, .aside{
   background-color: green;
@@ -54,19 +41,44 @@
 justify-content: center;
 align-items: center;
 }
-.footer{
-  background-color: green;
-  height: 100px;
-  margin: 25px; 
+footer{
+  height: 10px;
+  margin: 10px; 
   display: flex;
-  justify-content: center;
+  justify-content:end;
   align-items: center;
-  color:azure;
+  font-size: 10px;
 
 }
-html,
-body,
-#map {
-  height: 100%;
-  margin-left: 60px;
+#map {    
+  height: 80vh;
+  width: 100hw;
+  margin: 2px;
+  padding: 0;
+  z-index: 98;
+  color: rgb(73, 72, 72);
 }
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* CSS pour styliser le bouton "Évaluer mon école" */
+.evaluate-button {
+  background-color: #bff3d4; /* Couleur de fond */
+  color: #636262; /* Couleur du texte */
+  border: none; /* Supprimer la bordure */
+  padding: 10px 20px; /* Remplissage intérieur */
+  font-size: 16px; /* Taille de la police */
+  cursor: pointer; /* Curseur de la souris */
+  border-radius: 5px; /* Bordure arrondie */
+}
+
+.evaluate-button:hover {
+  background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+
+

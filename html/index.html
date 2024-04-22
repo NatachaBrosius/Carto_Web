@@ -1,97 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Demo avec Leaflet</title>     
-    <!-- Appel du css personnel pour la mise en forme -->
-  <link rel="stylesheet" href="../css/style.css">
-  <!-- Appel des attributs leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
-    </script>
-  <!-- Load Esri Leaflet from CDN -->
-  <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+	<title>Ecoles primaire CSS de la Capitale</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<!-- Appel des attributs leaflet -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+	  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+	  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+	  </script>
+	<!-- Load Esri Leaflet from CDN -->
+	<script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+  
+	<!-- Load Esri Leaflet Vector from CDN -->
+	<script src="https://unpkg.com/esri-leaflet-vector@4.2.3/dist/esri-leaflet-vector.js" crossorigin=""></script>
+  
+	<link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css">
+	<script src="https://js.arcgis.com/4.23/"></script>
+  
+    <!-- CSS CDN BOOTSTRAP -->
 
-  <!-- Load Esri Leaflet Vector from CDN -->
-  <script src="https://unpkg.com/esri-leaflet-vector@4.2.3/dist/esri-leaflet-vector.js" crossorigin=""></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<!-- Leaflet legende-->   
+<link rel="stylesheet" href="/Leaflet.Legend-master/src/leaflet.legend.css">
+<script src="/Leaflet.Legend-master/src/leaflet.legend.js"></script>
+<!-- Leaflet easybutton-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+<!-- Leaflet search-->
+<script src="//unpkg.com/@sjaakp/leaflet-search/dist/leaflet-search.js"></script>
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css">
-  <script src="https://js.arcgis.com/4.23/"></script>
-	<link rel="stylesheet" type="text/css" href="../css/style.css">
-	<!-- CSS CDN BOOTSTRAP -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
- <!-- JS CDN BOOTSTRAP -->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
- 
-	
+
+
 </head>
-<body>
-<div class="container-fluid flottant">
 
-		<div class="row">
-			<div class="col">
-				<a href="https://www.cegeplimoilou.ca/"><img src="../Image/logo_cegep.png" alt="logo" style="width:90px;height:70px;"></a>
-			</div>
-			<div class="col-8">
-                <h1>Titre</h1>
-			</div>
-			<div class="col">
-				<a id="ind" href="Apropos.html#O">Objectifs</a>
-			</div>
-			<div class="col">
-				<a id="ind" href="Apropos.html#MEG">Mise en garde</a>
-			</div>
-			<div class="col">
-				<a id="ind" href="Apropos.html#QUI">Carte</a>
-			</div>
-		</div>
+<body>
+	<div class="container-fluid flottant">
+        <!-- Première ligne -->
+        <div class="row menu">
+            <div class="col"><a href="https://www.cegeplimoilou.ca/"><img src="../Image/logo_cegep.png" alt="logo"
+				style="width:90px;height:70px;"></a></div>
+            <div class="col-8"><h1>Évaluer votre école primaire de la commission scolaire de la Capitale</h1></div>
+            <div class="col"><a id="ind" href="index.html#Titre_carte">Carte</a></div>
+            <div class="col"><a id="ind" href="index.html#menu">Retour en haut</a></div>
+			<div class="col"><a id="ind" href="index.html#S">Source</a></div>
+        </div>
 	</div>
-<hr>
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				Column 1
-			</div>
-			<div class="col">
-				Column 2
-			</div>
-			<div class="col">
-				Column 3
-			</div>
-			<div class="col">
-				Column 4
-			</div>
-		</div>
-	</div>
-	<hr>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col">
-                <div id="map">
-                </div>
+		<hr>
+	<div class="container-fluid bloc">	
+		<!-- Deuxième ligne -->
+        <div class="row tete" id="menu">
+            <div class="col"><h2>Mise en garde</h2>
+				<p>Ce travail est produit dans le cadre d'un projet scolaire de fin de programme de DEC en Géomatique au Cegep
+					Limoilou. <br></p>
+				<strong>Il n'a aucune valeure légale.</strong><br>
+				<p>Les scores affichés sont la moyenne des évaluations faites par les utilisateurs du site ayant fréquenté
+					l'école.</p></div>
+            <div class="col"><img src="../Image/Ecole.jpg" alt="ecole" style="width:500px;height: 200px;"></div>
+            <div class="col"> <p>Proposer une solution pour :<br>
+				<img src="../Image/Objectif.png" alt="objectifs" style="width:500px;height:300px;">
+			</p></div>
+        </div>
+        <!-- Troisième ligne -->
+        <div class="row">
+            <div class="col">
+				<!-- Titre -->
+				<div id="Titre_carte">
+					<h1>Ecoles primaires et leur bassin de désserte de la commission scolaire de la Capitale</h1>
+				  </div>
+                <!-- Insérer ici la carte -->
+                <div id="map"></div>
             </div>
         </div>
-	<hr>
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				Column 2
-			</div>
-			<div class="col-8">
-				Column 8
-			</div>
-			<div class="col">
-				Column 2
-			</div>
-
-		</div>
-	</div>
-	 
-	
-	
+		<!-- Deuxième ligne -->
+        <div class="row">
+            <div class="col"><h4 id="S">Source</h4> <!-- titre secondaire avec marqueur pour y revenir-->
+				<p>Les données sources qui ont permis la réalisation ont été téléchargées :<br>
+				<ul>
+					<li> Via le site données ouvertes pour les écoles, les routes et les limites de la commission. </li>
+					<li> Via Statistique Canada pour les informations démographiques pour aider à déterminer les bassins</li>
+					</p>
+				</ul></div>
+            <div class="col"><h4>Les bassins</h4>
+			<p>Les bassins de desserte représentent les zones d'habitation pour lesquelles l'école est concidéré comme l'école d'attribution par défaut. <br>
+			Ils ne représentent pas forcément la réalité car nous ne disposons pas de la démographie au foyer prêt qui aurait pu permettre un meilleur calcul. <br>
+		Ce sont des représentations théoriques, néanmoins ils respectent la délimitation de la commission scolaire.</p></div>
+            <div class="col"><h4>Les écoles</h4> 
+			<p>Les écoles sont réélles mais ont été épuré afin de ne garder qu'un seul point par école. D'autre part seules les écoles primaires proposant un enseignement en français ont été concervées.</p></div>
+        </div>
+        
+    </div>
+	<footer>
+		<br>Projet réalisé par Natacha Brosius Guilon au cours de l'hiver 2024 à Québec.
+	  </footer>	
+  <!-- Appel du script pour l'affichage de la carte -->
+  <script src="../java/script.js"></script>
 </body>
+
 </html>
